@@ -3,8 +3,8 @@ const app = express();
 
 require('dotenv').config();
 require('./startup/logging')();
-require('./startup/routes')(app);
 require('./services/database.services')();
+require('./startup/routes')(app);
 
 const PORT = process.env.PORT || 3000;
 
