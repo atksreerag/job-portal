@@ -70,7 +70,15 @@ exports.validateCreateJobs = (data) => {
 		schedule: Joi.string().valid('Fulltime', 'Partime').required(),
 		education: Joi.string().required(),
 		experience: Joi.number().required(),
+	});
+	return schema.validate(data);
+};
 
+
+exports.validateFilterGetJobs = (data) => {
+	const schema = Joi.object({
+		post: Joi.string().min(4),
+		location: Joi.string().min(3)
 	});
 	return schema.validate(data);
 };

@@ -6,4 +6,9 @@ router.post('/', (req, res, next) => {
 	repository.createJobs(req, res, next);
 });
 
+router.get('/', (req, res, next) => {
+	repository.getJobs(req, res, next);
+});
+
+
 module.exports = router;
