@@ -1,9 +1,9 @@
-module.exports = async(handler) => {
+module.exports = ((handler) => {
 	return async(req, res, next) => {
 		try {
 			await handler(req, res, next);
-		} catch (ex) {
+		} catch(ex) {
 			next(ex);
 		}
 	};
-};
+});
