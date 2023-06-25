@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const isObjectId = require('./validations.js/isObjectId');
 
 const jobSchema = new mongoose.Schema({
 	post: {
@@ -25,8 +26,15 @@ const jobSchema = new mongoose.Schema({
 		required: true,
 		enum: ['Regular', 'Intern']
 	},
-	qualification: {
-		type: String,
+	skills: {
+		type: Array,
+		validate: {
+			validator: (v) => {
+				return v.length > 0;
+			},
+			message: 'Please Add skills'
+		},
+		required: true
 	},
 	jobDescription: {
 		type: String,
@@ -42,7 +50,7 @@ const jobSchema = new mongoose.Schema({
 		type: String,
 	},
 	experience: {
-		type: String,
+		type: Number,
 		required: true,
 	},
 	createdBy: {
@@ -65,7 +73,7 @@ exports.validateCreateJobs = (data) => {
 		location: Joi.string().min(4).required(),
 		salary: Joi.number().min(4).required(),
 		type: Joi.string().valid('Regular', 'Intern').required(),
-		qualification: Joi.string().min(4).required(),
+		skills: Joi.array().required(),
 		jobDescription: Joi.string().min(4).required(),
 		schedule: Joi.string().valid('Fulltime', 'Partime').required(),
 		education: Joi.string().required(),
@@ -80,5 +88,13 @@ exports.validateFilterGetJobs = (data) => {
 		post: Joi.string().min(4),
 		location: Joi.string().min(3)
 	});
+	return schema.validate(data);
+};
+
+exports.validateGetOneJob = function validateGetOneJob(data) {
+	const schema = Joi.object({
+		id: Joi.custom(isObjectId).required()
+	});
+
 	return schema.validate(data);
 };
